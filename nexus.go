@@ -1,6 +1,7 @@
 package gonexus
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -17,7 +18,10 @@ type API struct {
 
 // NewAPI func
 func NewAPI(url string, username string, password string) *API {
-	return &API{url, username, password, &http.Client{}}
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	return &API{url, username, password, &http.Client{Transport: tr}}
 }
 
 // HTTPDo func
